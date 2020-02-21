@@ -14679,6 +14679,7 @@ Discarded input sections
  .group         0x00000000        0x8 src/main.o
  .group         0x00000000        0x8 src/main.o
  .group         0x00000000        0x8 src/main.o
+ .group         0x00000000        0x8 src/main.o
  .text          0x00000000        0x0 src/main.o
  .data          0x00000000        0x0 src/main.o
  .bss           0x00000000        0x0 src/main.o
@@ -15395,7 +15396,7 @@ LOAD c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.1
                 0x08000000                g_pfnVectors
                 0x08000198                . = ALIGN (0x4)
 
-.text           0x08000198      0x900
+.text           0x08000198      0x978
                 0x08000198                . = ALIGN (0x4)
  *(.text)
  .text          0x08000198       0x5c c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
@@ -15445,171 +15446,171 @@ LOAD c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.1
                 0x080007a8                HAL_MspInit
  .text.delay    0x080007b8       0x30 src/main.o
                 0x080007b8                delay
- .text.main     0x080007e8       0x5c src/main.o
+ .text.main     0x080007e8       0xd4 src/main.o
                 0x080007e8                main
  .text.MX_GPIO_Init
-                0x08000844       0x30 src/main.o
-                0x08000844                MX_GPIO_Init
+                0x080008bc       0x30 src/main.o
+                0x080008bc                MX_GPIO_Init
  .text.SysTick_Handler
-                0x08000874       0x10 src/stm32f4xx_it.o
-                0x08000874                SysTick_Handler
+                0x080008ec       0x10 src/stm32f4xx_it.o
+                0x080008ec                SysTick_Handler
  .text.SystemInit
-                0x08000884       0x6c src/system_stm32f4xx.o
-                0x08000884                SystemInit
+                0x080008fc       0x6c src/system_stm32f4xx.o
+                0x080008fc                SystemInit
  .text.Reset_Handler
-                0x080008f0       0x50 startup/startup_stm32f411xe.o
-                0x080008f0                Reset_Handler
+                0x08000968       0x50 startup/startup_stm32f411xe.o
+                0x08000968                Reset_Handler
  .text.Default_Handler
-                0x08000940        0x2 startup/startup_stm32f411xe.o
-                0x08000940                RTC_Alarm_IRQHandler
-                0x08000940                EXTI2_IRQHandler
-                0x08000940                DebugMon_Handler
-                0x08000940                SPI4_IRQHandler
-                0x08000940                TIM1_CC_IRQHandler
-                0x08000940                DMA2_Stream5_IRQHandler
-                0x08000940                HardFault_Handler
-                0x08000940                DMA1_Stream5_IRQHandler
-                0x08000940                PVD_IRQHandler
-                0x08000940                SDIO_IRQHandler
-                0x08000940                TAMP_STAMP_IRQHandler
-                0x08000940                PendSV_Handler
-                0x08000940                NMI_Handler
-                0x08000940                EXTI3_IRQHandler
-                0x08000940                TIM1_UP_TIM10_IRQHandler
-                0x08000940                I2C3_ER_IRQHandler
-                0x08000940                EXTI0_IRQHandler
-                0x08000940                I2C2_EV_IRQHandler
-                0x08000940                DMA1_Stream2_IRQHandler
-                0x08000940                FPU_IRQHandler
-                0x08000940                UsageFault_Handler
-                0x08000940                DMA2_Stream2_IRQHandler
-                0x08000940                SPI1_IRQHandler
-                0x08000940                TIM1_BRK_TIM9_IRQHandler
-                0x08000940                DMA2_Stream3_IRQHandler
-                0x08000940                USART6_IRQHandler
-                0x08000940                DMA2_Stream0_IRQHandler
-                0x08000940                TIM4_IRQHandler
-                0x08000940                I2C1_EV_IRQHandler
-                0x08000940                DMA1_Stream6_IRQHandler
-                0x08000940                DMA1_Stream1_IRQHandler
-                0x08000940                TIM3_IRQHandler
-                0x08000940                RCC_IRQHandler
-                0x08000940                Default_Handler
-                0x08000940                EXTI15_10_IRQHandler
-                0x08000940                ADC_IRQHandler
-                0x08000940                DMA1_Stream7_IRQHandler
-                0x08000940                SPI5_IRQHandler
-                0x08000940                TIM5_IRQHandler
-                0x08000940                DMA2_Stream7_IRQHandler
-                0x08000940                I2C3_EV_IRQHandler
-                0x08000940                EXTI9_5_IRQHandler
-                0x08000940                RTC_WKUP_IRQHandler
-                0x08000940                SPI2_IRQHandler
-                0x08000940                MemManage_Handler
-                0x08000940                DMA1_Stream0_IRQHandler
-                0x08000940                SVC_Handler
-                0x08000940                EXTI4_IRQHandler
-                0x08000940                WWDG_IRQHandler
-                0x08000940                TIM2_IRQHandler
-                0x08000940                OTG_FS_WKUP_IRQHandler
-                0x08000940                TIM1_TRG_COM_TIM11_IRQHandler
-                0x08000940                EXTI1_IRQHandler
-                0x08000940                USART2_IRQHandler
-                0x08000940                I2C2_ER_IRQHandler
-                0x08000940                DMA2_Stream1_IRQHandler
-                0x08000940                FLASH_IRQHandler
-                0x08000940                DMA2_Stream4_IRQHandler
-                0x08000940                BusFault_Handler
-                0x08000940                USART1_IRQHandler
-                0x08000940                OTG_FS_IRQHandler
-                0x08000940                SPI3_IRQHandler
-                0x08000940                DMA1_Stream4_IRQHandler
-                0x08000940                I2C1_ER_IRQHandler
-                0x08000940                DMA2_Stream6_IRQHandler
-                0x08000940                DMA1_Stream3_IRQHandler
- *fill*         0x08000942        0x2 
+                0x080009b8        0x2 startup/startup_stm32f411xe.o
+                0x080009b8                RTC_Alarm_IRQHandler
+                0x080009b8                EXTI2_IRQHandler
+                0x080009b8                DebugMon_Handler
+                0x080009b8                SPI4_IRQHandler
+                0x080009b8                TIM1_CC_IRQHandler
+                0x080009b8                DMA2_Stream5_IRQHandler
+                0x080009b8                HardFault_Handler
+                0x080009b8                DMA1_Stream5_IRQHandler
+                0x080009b8                PVD_IRQHandler
+                0x080009b8                SDIO_IRQHandler
+                0x080009b8                TAMP_STAMP_IRQHandler
+                0x080009b8                PendSV_Handler
+                0x080009b8                NMI_Handler
+                0x080009b8                EXTI3_IRQHandler
+                0x080009b8                TIM1_UP_TIM10_IRQHandler
+                0x080009b8                I2C3_ER_IRQHandler
+                0x080009b8                EXTI0_IRQHandler
+                0x080009b8                I2C2_EV_IRQHandler
+                0x080009b8                DMA1_Stream2_IRQHandler
+                0x080009b8                FPU_IRQHandler
+                0x080009b8                UsageFault_Handler
+                0x080009b8                DMA2_Stream2_IRQHandler
+                0x080009b8                SPI1_IRQHandler
+                0x080009b8                TIM1_BRK_TIM9_IRQHandler
+                0x080009b8                DMA2_Stream3_IRQHandler
+                0x080009b8                USART6_IRQHandler
+                0x080009b8                DMA2_Stream0_IRQHandler
+                0x080009b8                TIM4_IRQHandler
+                0x080009b8                I2C1_EV_IRQHandler
+                0x080009b8                DMA1_Stream6_IRQHandler
+                0x080009b8                DMA1_Stream1_IRQHandler
+                0x080009b8                TIM3_IRQHandler
+                0x080009b8                RCC_IRQHandler
+                0x080009b8                Default_Handler
+                0x080009b8                EXTI15_10_IRQHandler
+                0x080009b8                ADC_IRQHandler
+                0x080009b8                DMA1_Stream7_IRQHandler
+                0x080009b8                SPI5_IRQHandler
+                0x080009b8                TIM5_IRQHandler
+                0x080009b8                DMA2_Stream7_IRQHandler
+                0x080009b8                I2C3_EV_IRQHandler
+                0x080009b8                EXTI9_5_IRQHandler
+                0x080009b8                RTC_WKUP_IRQHandler
+                0x080009b8                SPI2_IRQHandler
+                0x080009b8                MemManage_Handler
+                0x080009b8                DMA1_Stream0_IRQHandler
+                0x080009b8                SVC_Handler
+                0x080009b8                EXTI4_IRQHandler
+                0x080009b8                WWDG_IRQHandler
+                0x080009b8                TIM2_IRQHandler
+                0x080009b8                OTG_FS_WKUP_IRQHandler
+                0x080009b8                TIM1_TRG_COM_TIM11_IRQHandler
+                0x080009b8                EXTI1_IRQHandler
+                0x080009b8                USART2_IRQHandler
+                0x080009b8                I2C2_ER_IRQHandler
+                0x080009b8                DMA2_Stream1_IRQHandler
+                0x080009b8                FLASH_IRQHandler
+                0x080009b8                DMA2_Stream4_IRQHandler
+                0x080009b8                BusFault_Handler
+                0x080009b8                USART1_IRQHandler
+                0x080009b8                OTG_FS_IRQHandler
+                0x080009b8                SPI3_IRQHandler
+                0x080009b8                DMA1_Stream4_IRQHandler
+                0x080009b8                I2C1_ER_IRQHandler
+                0x080009b8                DMA2_Stream6_IRQHandler
+                0x080009b8                DMA1_Stream3_IRQHandler
+ *fill*         0x080009ba        0x2 
  .text.__libc_init_array
-                0x08000944       0x50 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
-                0x08000944                __libc_init_array
+                0x080009bc       0x50 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
+                0x080009bc                __libc_init_array
  .text.startup.register_fini
-                0x08000994       0x14 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x080009a8        0xc c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
-                0x080009a8                atexit
+                0x08000a0c       0x14 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x08000a20        0xc c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
+                0x08000a20                atexit
  .text.__libc_fini_array
-                0x080009b4       0x28 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
-                0x080009b4                __libc_fini_array
+                0x08000a2c       0x28 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
+                0x08000a2c                __libc_fini_array
  .text.__register_exitproc
-                0x080009dc       0xa4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
-                0x080009dc                __register_exitproc
+                0x08000a54       0xa4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
+                0x08000a54                __register_exitproc
  *(.glue_7)
- .glue_7        0x08000a80        0x0 linker stubs
+ .glue_7        0x08000af8        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x08000a80        0x0 linker stubs
+ .glue_7t       0x08000af8        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x08000a80        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
+ .eh_frame      0x08000af8        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
  *(.init)
- .init          0x08000a80        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crti.o
-                0x08000a80                _init
- .init          0x08000a84        0x8 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtn.o
+ .init          0x08000af8        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crti.o
+                0x08000af8                _init
+ .init          0x08000afc        0x8 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtn.o
  *(.fini)
- .fini          0x08000a8c        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crti.o
-                0x08000a8c                _fini
- .fini          0x08000a90        0x8 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtn.o
-                0x08000a98                . = ALIGN (0x4)
-                0x08000a98                _etext = .
+ .fini          0x08000b04        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crti.o
+                0x08000b04                _fini
+ .fini          0x08000b08        0x8 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtn.o
+                0x08000b10                . = ALIGN (0x4)
+                0x08000b10                _etext = .
 
-.vfp11_veneer   0x08000a98        0x0
- .vfp11_veneer  0x08000a98        0x0 linker stubs
+.vfp11_veneer   0x08000b10        0x0
+ .vfp11_veneer  0x08000b10        0x0 linker stubs
 
-.v4_bx          0x08000a98        0x0
- .v4_bx         0x08000a98        0x0 linker stubs
+.v4_bx          0x08000b10        0x0
+ .v4_bx         0x08000b10        0x0 linker stubs
 
-.iplt           0x08000a98        0x0
- .iplt          0x08000a98        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
+.iplt           0x08000b10        0x0
+ .iplt          0x08000b10        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
 
-.rodata         0x08000a98        0x4
-                0x08000a98                . = ALIGN (0x4)
+.rodata         0x08000b10        0x4
+                0x08000b10                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
  .rodata._global_impure_ptr
-                0x08000a98        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
-                0x08000a98                _global_impure_ptr
-                0x08000a9c                . = ALIGN (0x4)
+                0x08000b10        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
+                0x08000b10                _global_impure_ptr
+                0x08000b14                . = ALIGN (0x4)
 
-.rel.dyn        0x08000a9c        0x0
- .rel.iplt      0x08000a9c        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
+.rel.dyn        0x08000b14        0x0
+ .rel.iplt      0x08000b14        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x08000a9c        0x0
-                0x08000a9c                __exidx_start = .
+.ARM            0x08000b14        0x0
+                0x08000b14                __exidx_start = .
  *(.ARM.exidx*)
-                0x08000a9c                __exidx_end = .
+                0x08000b14                __exidx_end = .
 
-.preinit_array  0x08000a9c        0x0
-                0x08000a9c                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x08000b14        0x0
+                0x08000b14                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x08000a9c                PROVIDE (__preinit_array_end, .)
+                0x08000b14                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x08000a9c        0x8
-                0x08000a9c                PROVIDE (__init_array_start, .)
+.init_array     0x08000b14        0x8
+                0x08000b14                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  .init_array.00000
-                0x08000a9c        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
+                0x08000b14        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
  *(.init_array*)
- .init_array    0x08000aa0        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
-                0x08000aa4                PROVIDE (__init_array_end, .)
+ .init_array    0x08000b18        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
+                0x08000b1c                PROVIDE (__init_array_end, .)
 
-.fini_array     0x08000aa4        0x4
-                0x08000aa4                PROVIDE (__fini_array_start, .)
+.fini_array     0x08000b1c        0x4
+                0x08000b1c                PROVIDE (__fini_array_start, .)
  *(SORT(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x08000aa4        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
-                0x08000aa8                PROVIDE (__fini_array_end, .)
-                0x08000aa8                _sidata = LOADADDR (.data)
+ .fini_array    0x08000b1c        0x4 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
+                0x08000b20                PROVIDE (__fini_array_end, .)
+                0x08000b20                _sidata = LOADADDR (.data)
 
-.data           0x20000000      0x430 load address 0x08000aa8
+.data           0x20000000      0x430 load address 0x08000b20
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -15622,14 +15623,14 @@ LOAD c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.1
                 0x20000430                . = ALIGN (0x4)
                 0x20000430                _edata = .
 
-.jcr            0x20000430        0x0 load address 0x08000ed8
+.jcr            0x20000430        0x0 load address 0x08000f50
  .jcr           0x20000430        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
 
-.igot.plt       0x20000430        0x0 load address 0x08000ed8
+.igot.plt       0x20000430        0x0 load address 0x08000f50
  .igot.plt      0x20000430        0x0 c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.13.2.201703061525/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
                 0x20000430                . = ALIGN (0x4)
 
-.bss            0x20000430       0x20 load address 0x08000ed8
+.bss            0x20000430       0x20 load address 0x08000f50
                 0x20000430                _sbss = .
                 0x20000430                __bss_start__ = _sbss
  *(.bss)
@@ -15643,7 +15644,7 @@ LOAD c:/users/grzko/.p2/pool/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.1
                 0x20000450                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20000450      0x600 load address 0x08000ed8
+                0x20000450      0x600 load address 0x08000f50
                 0x20000450                . = ALIGN (0x8)
                 0x20000450                PROVIDE (end, .)
                 [!provide]                PROVIDE (_end, .)
@@ -15745,7 +15746,7 @@ OUTPUT(STM32F4_Pong_Game.elf elf32-littlearm)
  .debug_ranges  0x00000260       0x18 src/system_stm32f4xx.o
  .debug_ranges  0x00000278       0x20 startup/startup_stm32f411xe.o
 
-.debug_macro    0x00000000    0x18969
+.debug_macro    0x00000000    0x189b2
  .debug_macro   0x00000000      0x4d3 HAL_Driver/Src/stm32f4xx_hal.o
  .debug_macro   0x000004d3      0x8aa HAL_Driver/Src/stm32f4xx_hal.o
  .debug_macro   0x00000d7d      0x13a HAL_Driver/Src/stm32f4xx_hal.o
@@ -15832,21 +15833,22 @@ OUTPUT(STM32F4_Pong_Game.elf elf32-littlearm)
  .debug_macro   0x00016e6f      0x473 HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .debug_macro   0x000172e2      0x4ab HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .debug_macro   0x0001778d      0x473 HAL_Driver/Src/stm32f4xx_hal_msp_template.o
- .debug_macro   0x00017c00      0x473 src/main.o
- .debug_macro   0x00018073      0x47d src/stm32f4xx_it.o
- .debug_macro   0x000184f0      0x479 src/system_stm32f4xx.o
+ .debug_macro   0x00017c00      0x47c src/main.o
+ .debug_macro   0x0001807c       0x40 src/main.o
+ .debug_macro   0x000180bc      0x47d src/stm32f4xx_it.o
+ .debug_macro   0x00018539      0x479 src/system_stm32f4xx.o
 
-.debug_line     0x00000000     0x4eed
+.debug_line     0x00000000     0x4f5d
  .debug_line    0x00000000      0xbdf HAL_Driver/Src/stm32f4xx_hal.o
  .debug_line    0x00000bdf      0xd3f HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .debug_line    0x0000191e      0xbcb HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .debug_line    0x000024e9      0xa6e HAL_Driver/Src/stm32f4xx_hal_msp_template.o
- .debug_line    0x00002f57      0xa66 src/main.o
- .debug_line    0x000039bd      0xa5f src/stm32f4xx_it.o
- .debug_line    0x0000441c      0xa52 src/system_stm32f4xx.o
- .debug_line    0x00004e6e       0x7f startup/startup_stm32f411xe.o
+ .debug_line    0x00002f57      0xad6 src/main.o
+ .debug_line    0x00003a2d      0xa5f src/stm32f4xx_it.o
+ .debug_line    0x0000448c      0xa52 src/system_stm32f4xx.o
+ .debug_line    0x00004ede       0x7f startup/startup_stm32f411xe.o
 
-.debug_str      0x00000000    0x9c2ab
+.debug_str      0x00000000    0x9c394
  .debug_str     0x00000000    0x9bae5 HAL_Driver/Src/stm32f4xx_hal.o
                               0x9be57 (size before relaxing)
  .debug_str     0x0009bae5      0x406 HAL_Driver/Src/stm32f4xx_hal_cortex.o
@@ -15855,11 +15857,11 @@ OUTPUT(STM32F4_Pong_Game.elf elf32-littlearm)
                               0x9b74f (size before relaxing)
  .debug_str     0x0009c16b       0x51 HAL_Driver/Src/stm32f4xx_hal_msp_template.o
                               0x9b395 (size before relaxing)
- .debug_str     0x0009c1bc       0x30 src/main.o
-                              0x9b510 (size before relaxing)
- .debug_str     0x0009c1ec       0x38 src/stm32f4xx_it.o
+ .debug_str     0x0009c1bc      0x119 src/main.o
+                              0x9b5f9 (size before relaxing)
+ .debug_str     0x0009c2d5       0x38 src/stm32f4xx_it.o
                               0x9b362 (size before relaxing)
- .debug_str     0x0009c224       0x87 src/system_stm32f4xx.o
+ .debug_str     0x0009c30d       0x87 src/system_stm32f4xx.o
                               0x9b55d (size before relaxing)
 
 .comment        0x00000000       0x6e

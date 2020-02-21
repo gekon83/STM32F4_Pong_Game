@@ -58,7 +58,8 @@ src/main.o: ../src/main.c \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_hcd.h
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_hcd.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/stm32f4xx.h:
 
@@ -179,3 +180,5 @@ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_ll_usb.h:
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_hcd.h:
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h:

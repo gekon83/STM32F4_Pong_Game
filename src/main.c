@@ -8,8 +8,8 @@
   ******************************************************************************
 */
 
-
 #include "stm32f4xx.h"
+#include "main.h"
 
 void MX_GPIO_Init(void);
 
@@ -29,9 +29,21 @@ int main(void)
 
 	while(1)
 	{
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
-		delay(100);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, LED_Green_Pin, GPIO_PIN_SET);
+		delay(300);
+		HAL_GPIO_WritePin(GPIOD, LED_Orange_Pin, GPIO_PIN_SET);
+		delay(300);
+		HAL_GPIO_WritePin(GPIOD, LED_Red_Pin, GPIO_PIN_SET);
+		delay(300);
+		HAL_GPIO_WritePin(GPIOD, LED_Blue_Pin, GPIO_PIN_SET);
+		delay(300);
+		HAL_GPIO_WritePin(GPIOD, LED_Green_Pin, GPIO_PIN_RESET);
+		delay(600);
+		HAL_GPIO_WritePin(GPIOD, LED_Orange_Pin, GPIO_PIN_RESET);
+		delay(600);
+		HAL_GPIO_WritePin(GPIOD, LED_Red_Pin, GPIO_PIN_RESET);
+		delay(600);
+		HAL_GPIO_WritePin(GPIOD, LED_Blue_Pin, GPIO_PIN_RESET);
 		delay(600);
 	}
 }
@@ -40,13 +52,11 @@ void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef gpio;
 
-	/*Configure GPIO pin : LED_Blue_Pin */
-	//gpio.Pin = LED_Blue_Pin;
-	gpio.Pin = GPIO_PIN_15;
+	/*Configure LED GPIO*/
+	gpio.Pin = LED_Green_Pin | LED_Orange_Pin | LED_Red_Pin | LED_Blue_Pin;
 	gpio.Mode = GPIO_MODE_OUTPUT_PP;
 	gpio.Pull = GPIO_NOPULL;
 	gpio.Speed = GPIO_SPEED_FREQ_LOW;
-	//HAL_GPIO_Init(LED_Blue_GPIO_Port, &gpio);
-	HAL_GPIO_Init(GPIOD, &gpio);
+	HAL_GPIO_Init(LED_GPIO_Port, &gpio);
 }
 //-----------------------------------
