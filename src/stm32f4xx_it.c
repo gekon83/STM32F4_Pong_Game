@@ -20,6 +20,10 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+
+/* External variables --------------------------------------------------------*/
+extern TIM_HandleTypeDef htim10;
+
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -39,4 +43,9 @@ void SysTick_Handler(void)
 #ifdef USE_RTOS_SYSTICK
 	osSystickHandler();
 #endif
+}
+
+void TIM1_UP_TIM10_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&htim10);
 }

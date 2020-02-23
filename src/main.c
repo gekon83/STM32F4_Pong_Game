@@ -12,21 +12,27 @@
 #include "main.h"
 #include "SSD1331.h"
 
+// ===================================== private variables
+
 SPI_HandleTypeDef hspi1;
+TIM_HandleTypeDef htim10;
+
 uint8_t myY = 10;
 uint8_t myX = 10;
 char strX[10];
 char strY[10];
 
+// ===================================== private functions
 
+// ===================================== initialization functions (declarations)
 void MX_GPIO_Init(void);
 void MX_SPI1_Init(void);
+void MX_TIM10_Init(void);
 
-void delay (int time)
-{
-	for (int i=0; i<time*570; ++i) {}
-}
+void TIM10_IRQHandler(void);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim);
 
+// ===================================== main
 int main(void)
 {
 	HAL_Init();
@@ -40,49 +46,14 @@ int main(void)
 	ssd1331_clear_screen(BLACK);
 	ssd1331_draw_rect(0,0,95,63,GREEN);
 
-	while(1)
-	{
-		HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
+	MX_TIM10_Init();
+	HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
 
-		// clear OLED
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
-		ssd1331_draw_circle(myX,myY,5,BLACK);
 
-		myX += 2; //96
-		myY += 2; //62
-
-		sprintf(strX, "X:%d", myX);
-		sprintf(strY, "Y:%d", myY);
-
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
-		ssd1331_draw_circle(myX,myY,5,YELLOW);
-
-		//ssd1331_draw_rect(0,0,myX,myY,GREEN);
-
-		HAL_Delay(300);
-
-		/*
-		 *
-		HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
-
-		sprintf(strX, "X:%d", myX);
-		sprintf(strY, "Y:%d", myY);
-		ssd1331_draw_circle(myX,myY,5,YELLOW);
-		//ssd1331_draw_rect(0,0,myX,myY,GREEN);
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
-		HAL_Delay(500);
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
-		ssd1331_draw_circle(myX,myY,5,BLACK);
-		myX += 2; //96
-		myY += 2; //62
-		 */
-	}
+	while(1) {}
 }
-//-----------------------------------
+
+// ===================================== initialization functions (definitions)
 void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef gpio;
@@ -158,8 +129,76 @@ void MX_SPI1_Init(void)
 	hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	hspi1.Init.CRCPolynomial = 10;
 
-	HAL_SPI_Init(&hspi1);
+	if (HAL_SPI_Init(&hspi1) != HAL_OK)
+	{
+		Error_Handler();
+	}
 
 	__HAL_SPI_ENABLE(&hspi1);
 }
 
+void MX_TIM10_Init(void)
+{
+	__HAL_RCC_TIM10_CLK_ENABLE();
+
+	htim10.Instance = TIM10;
+	htim10.Init.Prescaler = 10000 - 1;
+	htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim10.Init.Period = 300 - 1;
+	htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	//htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+    /* TIM10 interrupt Init */
+    HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+
+	HAL_TIM_Base_Start_IT(&htim10);
+}
+
+void TIM10_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&htim10);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
+{
+	static uint8_t counter = 0;
+	counter++;
+
+    if(htim->Instance == TIM10)
+    {
+    	/* changing timer10 settings (test)
+    	if (counter >= 10) {
+    		counter = 0;
+    		htim10.Init.Period = htim10.Init.Period < 299 ? 299 : 199;
+    		HAL_TIM_Base_Init(&htim10);
+    	}
+    	*/
+
+    	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Red_Pin);
+
+		// clear OLED
+		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
+		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
+		ssd1331_draw_circle(myX,myY,5,BLACK);
+
+		myX += 2; //96
+		myY += 2; //62
+
+		sprintf(strX, "x:%d", myX);
+		sprintf(strY, "y:%d", myY);
+
+		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
+		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
+		ssd1331_draw_circle(myX,myY,5,YELLOW);
+    }
+}
+
+void Error_Handler(void)
+{
+	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, SET);
+}
