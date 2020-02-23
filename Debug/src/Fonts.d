@@ -1,4 +1,9 @@
-src/main.o: ../src/main.c \
+src/Fonts.o: ../src/Fonts.c \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/LIB_Config.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_conf.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_def.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/stm32f4xx.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/stm32f411xe.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/core/core_cm4.h \
@@ -7,10 +12,6 @@ src/main.o: ../src/main.c \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/core/core_cmFunc.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/core/core_cmSimd.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/system_stm32f4xx.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_conf.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_def.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_gpio.h \
@@ -60,11 +61,19 @@ src/main.o: ../src/main.c \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_hcd.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/SSD1331.h \
+ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/Fonts.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/MacroAndConst.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/LIB_Config.h \
- E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h \
  E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/Fonts.h
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/LIB_Config.h:
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal.h:
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_conf.h:
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
+
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_def.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/stm32f4xx.h:
 
@@ -81,14 +90,6 @@ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/core/core_cmFunc.h:
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/core/core_cmSimd.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/CMSIS/device/system_stm32f4xx.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_conf.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_def.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 
@@ -188,12 +189,8 @@ E:/_Projekty/_1_cpp/STM32F4_Pong_Game/HAL_Driver/Inc/stm32f4xx_hal_hcd.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h:
 
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/SSD1331.h:
+E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/Fonts.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/MacroAndConst.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/LIB_Config.h:
-
-E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/main.h:
 
 E:/_Projekty/_1_cpp/STM32F4_Pong_Game/inc/Fonts.h:
