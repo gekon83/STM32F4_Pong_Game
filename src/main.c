@@ -11,25 +11,27 @@
 #include "stm32f4xx.h"
 #include "main.h"
 #include "SSD1331.h"
+#include "pong.h"
 
 // ===================================== private variables
 
 SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim10;
 
-uint8_t myY = 10;
-uint8_t myX = 10;
 char strX[10];
 char strY[10];
+
+struct BallItem ball;
+struct FrameItem frame;
 
 // ===================================== private functions
 
 // ===================================== initialization functions (declarations)
 void MX_GPIO_Init(void);
 void MX_SPI1_Init(void);
+void SystemClock_Config(void);
 void MX_TIM10_Init(void);
 
-void TIM10_IRQHandler(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim);
 
 // ===================================== main
@@ -37,18 +39,23 @@ int main(void)
 {
 	HAL_Init();
 
+	SystemClock_Config();
+
 	// initialization
 	MX_GPIO_Init();
 	MX_SPI1_Init();
 
+	// Pong setup
+	setupFrameItem(&frame, 0, 95, 0, 63);
+	setupBallItem(&ball, 35, 20, 3, 2, 10);
+
 	// OLED setup
 	ssd1331_init();
 	ssd1331_clear_screen(BLACK);
-	ssd1331_draw_rect(0,0,95,63,GREEN);
+	//ssd1331_draw_rect(0,0,95,63,GREEN);
 
 	MX_TIM10_Init();
 	HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
-
 
 	while(1) {}
 }
@@ -137,6 +144,45 @@ void MX_SPI1_Init(void)
 	__HAL_SPI_ENABLE(&hspi1);
 }
 
+void SystemClock_Config(void)
+{
+	RCC_OscInitTypeDef rccOsc;
+	RCC_ClkInitTypeDef rccClk;
+
+	// Configure the main internal regulator output voltage
+	__HAL_RCC_PWR_CLK_ENABLE();
+	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+
+	// Initializes the CPU, AHB and APB busses clocks
+	rccOsc.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+	rccOsc.HSIState = RCC_HSI_ON;
+	rccOsc.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+	rccOsc.PLL.PLLState = RCC_PLL_ON;
+	rccOsc.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+	rccOsc.PLL.PLLM = 8;
+	rccOsc.PLL.PLLN = 100;
+	rccOsc.PLL.PLLP = RCC_PLLP_DIV2;
+	rccOsc.PLL.PLLQ = 4;
+
+	if (HAL_RCC_OscConfig(&rccOsc) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Initializes the CPU, AHB and APB busses clocks
+	rccClk.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+							  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+	rccClk.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+	rccClk.AHBCLKDivider = RCC_SYSCLK_DIV1;
+	rccClk.APB1CLKDivider = RCC_HCLK_DIV2;
+	rccClk.APB2CLKDivider = RCC_HCLK_DIV1;
+
+	if (HAL_RCC_ClockConfig(&rccClk, FLASH_LATENCY_3) != HAL_OK)
+	{
+		Error_Handler();
+	}
+}
+
 void MX_TIM10_Init(void)
 {
 	__HAL_RCC_TIM10_CLK_ENABLE();
@@ -144,7 +190,7 @@ void MX_TIM10_Init(void)
 	htim10.Instance = TIM10;
 	htim10.Init.Prescaler = 10000 - 1;
 	htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim10.Init.Period = 300 - 1;
+	htim10.Init.Period = 500 - 1;
 	htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	//htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
@@ -157,11 +203,6 @@ void MX_TIM10_Init(void)
     HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
 
 	HAL_TIM_Base_Start_IT(&htim10);
-}
-
-void TIM10_IRQHandler(void)
-{
-	HAL_TIM_IRQHandler(&htim10);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
@@ -179,22 +220,28 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
     	}
     	*/
 
-    	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Red_Pin);
+    	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
 
 		// clear OLED
 		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
 		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
-		ssd1331_draw_circle(myX,myY,5,BLACK);
 
-		myX += 2; //96
-		myY += 2; //62
+		ssd1331_draw_circle(ball.x, ball.y, ball.radius, BLACK);
+		ssd1331_draw_rect(0,0,95,63,GREEN);
 
-		sprintf(strX, "x:%d", myX);
-		sprintf(strY, "y:%d", myY);
+		checkCollisions(&ball, &frame);
+
+		ball.x += ball.vx; //96
+		ball.y += ball.vy; //62
+
+		sprintf(strX, "x:%d", ball.x);
+		sprintf(strY, "y:%d", ball.y);
 
 		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
 		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
-		ssd1331_draw_circle(myX,myY,5,YELLOW);
+
+		ssd1331_draw_circle(ball.x, ball.y, ball.radius, YELLOW);
+
     }
 }
 

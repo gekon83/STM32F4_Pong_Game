@@ -87,6 +87,7 @@
 "src/Fonts.o"
 "src/SSD1331.o"
 "src/main.o"
+"src/pong.o"
 "src/stm32f4xx_it.o"
 "src/syscalls.o"
 "src/system_stm32f4xx.o"
