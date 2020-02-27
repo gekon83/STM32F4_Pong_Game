@@ -7,48 +7,27 @@
 
 #include "pong.h"
 
-void setupFrameItem(struct FrameItem *item, int minX, int maxX, int minY, int maxY) {
-	item->minX = minX;
-	item->maxX = maxX;
-	item->minY = minY;
-	item->maxY = maxY;
-}
 
-void setupBallItem(struct BallItem *item, int x, int y, int vx, int vy, int radius) {
-	item->x = x;
-	item->y = y;
-	item->vx = vx;
-	item->vy = vy;
-	item->radius = radius;
-}
+/***************************************************** objects interactions */
+void checkCollisions(Ball *ball, Frame *frame) {
 
-void checkCollisions(struct BallItem *ballItem, struct FrameItem *frameItem) {
+	if (Ball_getMinX(ball) <= Frame_getMinX(frame)) {
 
-	if (ballItem->x - ballItem->radius <= frameItem->minX) {
+		Ball_bounceRight(ball);
 
-	    //dx = ballItem->x - ballItem->radius - frameItem->minX;
-		ballItem->vx = (ballItem->vx < 0 ? ballItem->vx : -ballItem->vx);
-	    //vx *= factor;
+	} else if (Ball_getMaxX(ball) >= Frame_getMaxX(frame)) {
 
-	} else if (ballItem->x + ballItem->radius >= frameItem->maxX) {
-
-		//dx = ballItem->x + ballItem->radius - frameItem->maxX;
-		ballItem->vx = (ballItem->vx > 0 ? -ballItem->vx : ballItem->vx);
-		//vx *= factor;
+		Ball_bounceLeft(ball);
 
 	}
 
-	if (ballItem->y - ballItem->radius <= frameItem->minY) {
+	if (Ball_getMinY(ball) <= Frame_getMinY(frame)) {
 
-		//dy = ballItem->y - ballItem->radius - frameItem->minY;
-		ballItem->vy = (ballItem->vy < 0 ? ballItem->vy : -ballItem->vy);
-	    //vx *= factor;
+		Ball_bounceUp(ball);
 
-	} else if (ballItem->y + ballItem->radius >= frameItem->maxY) {
+	} else if (Ball_getMaxY(ball) >= Frame_getMaxY(frame)) {
 
-		//dy = ballItem->y + ballItem->radius - frameItem->maxY;
-		ballItem->vy = (ballItem->vy > 0 ? -ballItem->vy : ballItem->vy);
-		//vx *= factor;
+		Ball_bounceDown(ball);
 
 	}
 }

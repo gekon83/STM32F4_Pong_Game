@@ -10,6 +10,14 @@
 
 void Error_Handler(void);
 
+
+#define Button_Blue_Pin GPIO_PIN_0
+#define Button_Blue_GPIO_Port GPIOA
+#define Button_Blue_EXTI_IRQn EXTI0_IRQn
+#define Button_Joystick_Pin GPIO_PIN_3
+#define Button_Joystick_GPIO_Port GPIOA
+#define Button_Joystick_EXTI_IRQn EXTI3_IRQn
+
 //------------ LED --------------
 #define LED_Green_Pin GPIO_PIN_12
 #define LED_Green_GPIO_Port GPIOD

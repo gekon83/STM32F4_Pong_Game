@@ -22,6 +22,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* External variables --------------------------------------------------------*/
+extern DMA_HandleTypeDef hdma_adc1;
 extern TIM_HandleTypeDef htim10;
 
 /* Private function prototypes -----------------------------------------------*/
@@ -43,6 +44,21 @@ void SysTick_Handler(void)
 #ifdef USE_RTOS_SYSTICK
 	osSystickHandler();
 #endif
+}
+
+void EXTI0_IRQHandler(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+}
+
+void EXTI3_IRQHandler(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
+}
+
+void DMA2_Stream0_IRQHandler(void)
+{
+	HAL_DMA_IRQHandler(&hdma_adc1);
 }
 
 void TIM1_UP_TIM10_IRQHandler(void)

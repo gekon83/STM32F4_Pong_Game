@@ -13,27 +13,42 @@
 #include "SSD1331.h"
 #include "pong.h"
 
+
+#define ADC_RESOLUTION 4095
+#define LOWER_TRESH (25*ADC_RESOLUTION)/100
+#define UPPER_TRESH (75*ADC_RESOLUTION)/100
+
 // ===================================== private variables
 
 SPI_HandleTypeDef hspi1;
+ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
 TIM_HandleTypeDef htim10;
+
+uint16_t joystick[2];
 
 char strX[10];
 char strY[10];
 
-struct BallItem ball;
-struct FrameItem frame;
+Ball ball, test;
+Frame frame;
 
 // ===================================== private functions
 
 // ===================================== initialization functions (declarations)
-void MX_GPIO_Init(void);
-void MX_SPI1_Init(void);
+static void MX_GPIO_Init(void);
+static void MX_SPI1_Init(void);
+static void MX_DMA_Init(void);
+static void MX_ADC1_Init(void);
 void SystemClock_Config(void);
-void MX_TIM10_Init(void);
+static void MX_TIM10_Init(void);
+
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 
+
+//void MoveMe(uint16_t x);
 // ===================================== main
 int main(void)
 {
@@ -45,9 +60,15 @@ int main(void)
 	MX_GPIO_Init();
 	MX_SPI1_Init();
 
+	MX_DMA_Init();
+	MX_ADC1_Init();
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*) joystick, 2);
+
 	// Pong setup
-	setupFrameItem(&frame, 0, 95, 0, 63);
-	setupBallItem(&ball, 35, 20, 3, 2, 10);
+	Frame_ctor(&frame, 0, 95, 0, 63);
+	Ball_ctor(&ball, 35, 20, 3, 2, 10);
+	// this is a test structure to calibrate joystick movements
+	Ball_ctor(&test, 35, 50, 0, 0, 5);
 
 	// OLED setup
 	ssd1331_init();
@@ -61,7 +82,7 @@ int main(void)
 }
 
 // ===================================== initialization functions (definitions)
-void MX_GPIO_Init(void)
+static void MX_GPIO_Init(void)
 {
 	GPIO_InitTypeDef gpio;
 
@@ -116,9 +137,32 @@ void MX_GPIO_Init(void)
     gpio.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     gpio.Alternate = GPIO_AF5_SPI1;
     HAL_GPIO_Init(GPIOA, &gpio);
+
+
+
+
+
+    /*Configure GPIO pin : Button_Blue_Pin */
+    gpio.Pin = Button_Blue_Pin;
+    gpio.Mode = GPIO_MODE_IT_RISING;
+    gpio.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(Button_Blue_GPIO_Port, &gpio);
+
+    /*Configure GPIO pin : Button_Joystick_Pin */
+    gpio.Pin = Button_Joystick_Pin;
+    gpio.Mode = GPIO_MODE_IT_RISING;
+    gpio.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(Button_Joystick_GPIO_Port, &gpio);
+
+    /* EXTI interrupt init*/
+    HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+    HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 }
 
-void MX_SPI1_Init(void)
+static void MX_SPI1_Init(void)
 {
     __HAL_RCC_SPI1_CLK_ENABLE();
 
@@ -144,6 +188,59 @@ void MX_SPI1_Init(void)
 	__HAL_SPI_ENABLE(&hspi1);
 }
 
+static void MX_DMA_Init(void)
+{
+	// DMA controller clock enable
+	__HAL_RCC_DMA2_CLK_ENABLE();
+
+	// DMA interrupt init
+	// DMA2_Stream0_IRQn interrupt configuration
+	HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+}
+
+static void MX_ADC1_Init(void)
+{
+	ADC_ChannelConfTypeDef sConfig;
+
+	// Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+	hadc1.Instance = ADC1;
+	hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;
+	hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+	hadc1.Init.ScanConvMode = ENABLE;
+	hadc1.Init.ContinuousConvMode = ENABLE;
+	hadc1.Init.DiscontinuousConvMode = DISABLE;
+	hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+	hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+	hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+	hadc1.Init.NbrOfConversion = 2;
+	hadc1.Init.DMAContinuousRequests = ENABLE;
+	hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+
+	if (HAL_ADC_Init(&hadc1) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+	sConfig.Channel = ADC_CHANNEL_1;
+	sConfig.Rank = 1;
+	sConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
+
+	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+	{
+		Error_Handler();
+	}
+
+	// Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
+	sConfig.Channel = ADC_CHANNEL_2;
+	sConfig.Rank = 2;
+
+	if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+	{
+		Error_Handler();
+	}
+}
 void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef rccOsc;
@@ -183,7 +280,7 @@ void SystemClock_Config(void)
 	}
 }
 
-void MX_TIM10_Init(void)
+static void MX_TIM10_Init(void)
 {
 	__HAL_RCC_TIM10_CLK_ENABLE();
 
@@ -226,26 +323,142 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
 		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
 		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
 
-		ssd1331_draw_circle(ball.x, ball.y, ball.radius, BLACK);
-		ssd1331_draw_rect(0,0,95,63,GREEN);
+		ssd1331_draw_circle(Ball_getX(&ball), Ball_getY(&ball), Ball_getRadius(&ball), BLACK);
+		ssd1331_draw_circle(Ball_getX(&test), Ball_getY(&test), Ball_getRadius(&test), BLACK);
+
+		ssd1331_draw_rect(Frame_getMinX(&frame),
+						  Frame_getMinY(&frame),
+						  Frame_getMaxX(&frame),
+						  Frame_getMaxY(&frame),GREEN);
 
 		checkCollisions(&ball, &frame);
 
-		ball.x += ball.vx; //96
-		ball.y += ball.vy; //62
+		Ball_move(&ball);
 
-		sprintf(strX, "x:%d", ball.x);
-		sprintf(strY, "y:%d", ball.y);
+		//sprintf(strX, "x:%d", Ball_getX(&ball));
+		//sprintf(strY, "y:%d", Ball_getY(&ball));
+		sprintf(strX, "vx:%d", Ball_getVx(&ball));
+		sprintf(strY, "vy:%d", Ball_getVy(&ball));
+		//sprintf(strX, "x:%d", joystick[0]);
+		//sprintf(strY, "y:%d", joystick[1]);
+
+		if (joystick[0] > 3500) {
+			test.x += 2;
+		} else if (joystick[0] > 3000) {
+			test.x += 1;
+		} else if (joystick[0] < 1000) {
+			test.x -= 2;
+		} else if (joystick[0] < 500) {
+			test.x -= 1;
+		}
+
+		if (joystick[1] > 3500) {
+			test.y += 2;
+		} else if (joystick[1] > 3000) {
+			test.y += 1;
+		} else if (joystick[1] < 1000) {
+			test.y -= 2;
+		} else if (joystick[1] < 500) {
+			test.y -= 1;
+		}
 
 		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
 		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
 
-		ssd1331_draw_circle(ball.x, ball.y, ball.radius, YELLOW);
+		ssd1331_draw_circle(Ball_getX(&ball), Ball_getY(&ball), Ball_getRadius(&ball), YELLOW);
+		ssd1331_draw_circle(Ball_getX(&test), Ball_getY(&test), Ball_getRadius(&test), RED);
 
     }
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+
+	if (GPIO_Pin == Button_Joystick_Pin) {
+		HAL_GPIO_TogglePin(LED_Green_GPIO_Port, LED_Green_Pin);
+	} else if (GPIO_Pin == Button_Blue_Pin) {
+		HAL_GPIO_TogglePin(LED_Orange_GPIO_Port, LED_Orange_Pin);
+	}
 }
 
 void Error_Handler(void)
 {
 	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, SET);
+}
+
+void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  if(hadc->Instance==ADC1)
+  {
+  /* USER CODE BEGIN ADC1_MspInit 0 */
+
+  /* USER CODE END ADC1_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_ADC1_CLK_ENABLE();
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    /**ADC1 GPIO Configuration
+    PA1     ------> ADC1_IN1
+    PA2     ------> ADC1_IN2
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* ADC1 DMA Init */
+    /* ADC1 Init */
+    hdma_adc1.Instance = DMA2_Stream0;
+    hdma_adc1.Init.Channel = DMA_CHANNEL_0;
+    hdma_adc1.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_adc1.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_adc1.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+    hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+    hdma_adc1.Init.Mode = DMA_CIRCULAR;
+    hdma_adc1.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_adc1.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_adc1) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(hadc,DMA_Handle,hdma_adc1);
+
+  /* USER CODE BEGIN ADC1_MspInit 1 */
+
+  /* USER CODE END ADC1_MspInit 1 */
+  }
+
+}
+
+/**
+* @brief ADC MSP De-Initialization
+* This function freeze the hardware resources used in this example
+* @param hadc: ADC handle pointer
+* @retval None
+*/
+void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
+{
+  if(hadc->Instance==ADC1)
+  {
+  /* USER CODE BEGIN ADC1_MspDeInit 0 */
+
+  /* USER CODE END ADC1_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_ADC1_CLK_DISABLE();
+
+    /**ADC1 GPIO Configuration
+    PA1     ------> ADC1_IN1
+    PA2     ------> ADC1_IN2
+    */
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1|GPIO_PIN_2);
+
+    /* ADC1 DMA DeInit */
+    HAL_DMA_DeInit(hadc->DMA_Handle);
+  /* USER CODE BEGIN ADC1_MspDeInit 1 */
+
+  /* USER CODE END ADC1_MspDeInit 1 */
+  }
+
 }

@@ -6,6 +6,8 @@
 C_SRCS += \
 ../src/Fonts.c \
 ../src/SSD1331.c \
+../src/ball.c \
+../src/frame.c \
 ../src/main.c \
 ../src/pong.c \
 ../src/stm32f4xx_it.c \
@@ -15,6 +17,8 @@ C_SRCS += \
 OBJS += \
 ./src/Fonts.o \
 ./src/SSD1331.o \
+./src/ball.o \
+./src/frame.o \
 ./src/main.o \
 ./src/pong.o \
 ./src/stm32f4xx_it.o \
@@ -24,6 +28,8 @@ OBJS += \
 C_DEPS += \
 ./src/Fonts.d \
 ./src/SSD1331.d \
+./src/ball.d \
+./src/frame.d \
 ./src/main.d \
 ./src/pong.d \
 ./src/stm32f4xx_it.d \
