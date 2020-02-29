@@ -405,8 +405,8 @@ void ssd1331_clear_screen(uint16_t hwColor)
 
 void ssd1331_init(void)
 {
-	__SSD1331_RES_SET();  //RES set
-	__SSD1331_CS_SET();
+	//__SSD1331_RES_SET();  //RES set
+	//__SSD1331_CS_SET();
 	
 	ssd1331_write_byte(DISPLAY_OFF, SSD1331_CMD);          //Display Off
     ssd1331_write_byte(SET_CONTRAST_A, SSD1331_CMD);       //Set contrast for color A

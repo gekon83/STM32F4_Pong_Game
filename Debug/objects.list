@@ -89,6 +89,7 @@
 "src/ball.o"
 "src/frame.o"
 "src/main.o"
+"src/pad.o"
 "src/pong.o"
 "src/stm32f4xx_it.o"
 "src/syscalls.o"

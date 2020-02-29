@@ -9,6 +9,7 @@ C_SRCS += \
 ../src/ball.c \
 ../src/frame.c \
 ../src/main.c \
+../src/pad.c \
 ../src/pong.c \
 ../src/stm32f4xx_it.c \
 ../src/syscalls.c \
@@ -20,6 +21,7 @@ OBJS += \
 ./src/ball.o \
 ./src/frame.o \
 ./src/main.o \
+./src/pad.o \
 ./src/pong.o \
 ./src/stm32f4xx_it.o \
 ./src/syscalls.o \
@@ -31,6 +33,7 @@ C_DEPS += \
 ./src/ball.d \
 ./src/frame.d \
 ./src/main.d \
+./src/pad.d \
 ./src/pong.d \
 ./src/stm32f4xx_it.d \
 ./src/syscalls.d \

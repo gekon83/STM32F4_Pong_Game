@@ -6,17 +6,20 @@
   * @date    01-December-2013
   * @brief   Default main function.
   ******************************************************************************
+	 * to do list:
+	 * 		xxx implement bluetooth communications
+	 * 		xxx implement pad control
+	 * 		xxx use polimorphism for all drawn shapes (virtual draw and erase function)
+  ******************************************************************************
 */
 
 #include "stm32f4xx.h"
 #include "main.h"
-#include "SSD1331.h"
 #include "pong.h"
 
-
 #define ADC_RESOLUTION 4095
-#define LOWER_TRESH (25*ADC_RESOLUTION)/100
-#define UPPER_TRESH (75*ADC_RESOLUTION)/100
+//#define LOWER_TRESH (25*ADC_RESOLUTION)/100
+//#define UPPER_TRESH (75*ADC_RESOLUTION)/100
 
 // ===================================== private variables
 
@@ -26,12 +29,6 @@ DMA_HandleTypeDef hdma_adc1;
 TIM_HandleTypeDef htim10;
 
 uint16_t joystick[2];
-
-char strX[10];
-char strY[10];
-
-Ball ball, test;
-Frame frame;
 
 // ===================================== private functions
 
@@ -44,11 +41,10 @@ void SystemClock_Config(void);
 static void MX_TIM10_Init(void);
 
 
+// ===================================== interrupts
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 
-
-//void MoveMe(uint16_t x);
 // ===================================== main
 int main(void)
 {
@@ -64,16 +60,16 @@ int main(void)
 	MX_ADC1_Init();
 	HAL_ADC_Start_DMA(&hadc1, (uint32_t*) joystick, 2);
 
-	// Pong setup
-	Frame_ctor(&frame, 0, 95, 0, 63);
-	Ball_ctor(&ball, 35, 20, 3, 2, 10);
-	// this is a test structure to calibrate joystick movements
-	Ball_ctor(&test, 35, 50, 0, 0, 5);
+	/* init screen */
+	//ssd1331_init();
+	//ssd1331_clear_screen(BLACK);
+	//__SSD1331_RES_SET();  //RES set
+	HAL_GPIO_WritePin(RES_GPIO_Port, RES_Pin, GPIO_PIN_SET);
+	//__SSD1331_CS_SET();
+	HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_SET);
 
-	// OLED setup
-	ssd1331_init();
-	ssd1331_clear_screen(BLACK);
-	//ssd1331_draw_rect(0,0,95,63,GREEN);
+	Pong_initScreen();
+	Pong_initObjects();
 
 	MX_TIM10_Init();
 	HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
@@ -241,6 +237,7 @@ static void MX_ADC1_Init(void)
 		Error_Handler();
 	}
 }
+
 void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef rccOsc;
@@ -302,89 +299,6 @@ static void MX_TIM10_Init(void)
 	HAL_TIM_Base_Start_IT(&htim10);
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
-{
-	static uint8_t counter = 0;
-	counter++;
-
-    if(htim->Instance == TIM10)
-    {
-    	/* changing timer10 settings (test)
-    	if (counter >= 10) {
-    		counter = 0;
-    		htim10.Init.Period = htim10.Init.Period < 299 ? 299 : 199;
-    		HAL_TIM_Base_Init(&htim10);
-    	}
-    	*/
-
-    	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
-
-		// clear OLED
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, BLACK);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, BLACK);
-
-		ssd1331_draw_circle(Ball_getX(&ball), Ball_getY(&ball), Ball_getRadius(&ball), BLACK);
-		ssd1331_draw_circle(Ball_getX(&test), Ball_getY(&test), Ball_getRadius(&test), BLACK);
-
-		ssd1331_draw_rect(Frame_getMinX(&frame),
-						  Frame_getMinY(&frame),
-						  Frame_getMaxX(&frame),
-						  Frame_getMaxY(&frame),GREEN);
-
-		checkCollisions(&ball, &frame);
-
-		Ball_move(&ball);
-
-		//sprintf(strX, "x:%d", Ball_getX(&ball));
-		//sprintf(strY, "y:%d", Ball_getY(&ball));
-		sprintf(strX, "vx:%d", Ball_getVx(&ball));
-		sprintf(strY, "vy:%d", Ball_getVy(&ball));
-		//sprintf(strX, "x:%d", joystick[0]);
-		//sprintf(strY, "y:%d", joystick[1]);
-
-		if (joystick[0] > 3500) {
-			test.x += 2;
-		} else if (joystick[0] > 3000) {
-			test.x += 1;
-		} else if (joystick[0] < 1000) {
-			test.x -= 2;
-		} else if (joystick[0] < 500) {
-			test.x -= 1;
-		}
-
-		if (joystick[1] > 3500) {
-			test.y += 2;
-		} else if (joystick[1] > 3000) {
-			test.y += 1;
-		} else if (joystick[1] < 1000) {
-			test.y -= 2;
-		} else if (joystick[1] < 500) {
-			test.y -= 1;
-		}
-
-		ssd1331_display_string(20, 10, (const uint8_t *) strX, FONT_1608, RED);
-		ssd1331_display_string(20, 30, (const uint8_t *) strY, FONT_1608, GREEN);
-
-		ssd1331_draw_circle(Ball_getX(&ball), Ball_getY(&ball), Ball_getRadius(&ball), YELLOW);
-		ssd1331_draw_circle(Ball_getX(&test), Ball_getY(&test), Ball_getRadius(&test), RED);
-
-    }
-}
-
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-
-	if (GPIO_Pin == Button_Joystick_Pin) {
-		HAL_GPIO_TogglePin(LED_Green_GPIO_Port, LED_Green_Pin);
-	} else if (GPIO_Pin == Button_Blue_Pin) {
-		HAL_GPIO_TogglePin(LED_Orange_GPIO_Port, LED_Orange_Pin);
-	}
-}
-
-void Error_Handler(void)
-{
-	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, SET);
-}
-
 void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -438,6 +352,7 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 * @param hadc: ADC handle pointer
 * @retval None
 */
+
 void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 {
   if(hadc->Instance==ADC1)
@@ -462,3 +377,42 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
   }
 
 }
+
+// ===================================== interrupts
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim)
+{
+	static uint8_t counter = 0;
+	counter++;
+
+    if(htim->Instance == TIM10)
+    {
+    	/* changing timer10 settings (test)
+    	if (counter >= 10) {
+    		counter = 0;
+    		htim10.Init.Period = htim10.Init.Period < 299 ? 299 : 199;
+    		HAL_TIM_Base_Init(&htim10);
+    	}
+    	*/
+
+    	HAL_GPIO_TogglePin(LED_Blue_GPIO_Port, LED_Blue_Pin);
+
+    	Pong_timerTick();
+
+    }
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+
+	if (GPIO_Pin == Button_Joystick_Pin) {
+		HAL_GPIO_TogglePin(LED_Green_GPIO_Port, LED_Green_Pin);
+	} else if (GPIO_Pin == Button_Blue_Pin) {
+		HAL_GPIO_TogglePin(LED_Orange_GPIO_Port, LED_Orange_Pin);
+	}
+}
+
+void Error_Handler(void)
+{
+	HAL_GPIO_WritePin(LED_Red_GPIO_Port, LED_Red_Pin, SET);
+}
+
+

@@ -21,7 +21,7 @@ typedef struct {
 /************************************************************** constructor */
 void Ball_ctor(Ball *me, int8_t x, int8_t y, int8_t vx, int8_t vy, uint8_t radius);
 
-/**************************************************************** move ball */
+/***************************************************************** movement */
 //void Ball_move(Ball *me, int8_t dx, int8_t dy);
 void Ball_move(Ball *me);
 void Ball_bounceLeft(Ball *me);

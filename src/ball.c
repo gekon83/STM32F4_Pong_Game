@@ -15,7 +15,8 @@ void Ball_ctor(Ball *me, int8_t x, int8_t y, int8_t vx, int8_t vy, uint8_t radiu
 	me->vy = vy;
 	me->radius = radius;
 }
-/**************************************************************** move ball */
+
+/***************************************************************** movement */
 void Ball_move(Ball *me) {
 	me->x += me->vx;
 	me->y += me->vy;
